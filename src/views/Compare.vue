@@ -25,7 +25,7 @@
 
       <template v-slot:[`item.jumbo`]="{ item }">
         <v-chip
-          :color="getColor(item.jumbo)"
+          :color="getColor(item.name, item.jumbo)"
           dark
         >
           {{ item.jumbo }}
@@ -34,7 +34,7 @@
 
       <template v-slot:[`item.carrefour`]="{ item }">
         <v-chip
-          :color="getColor(item.carrefour)"
+          :color="getColor(item.name, item.carrefour)"
           dark
         >
           {{ item.carrefour }}
@@ -43,7 +43,7 @@
 
       <template v-slot:[`item.dia`]="{ item }">
         <v-chip
-          :color="getColor(item.dia)"
+          :color="getColor(item.name, item.dia)"
           dark
         >
           {{ item.dia }}
@@ -59,7 +59,7 @@
       :items-per-page="5"
       class="elevation-2 mt-7"
     >
-    
+
       <template v-slot:[`item.jumbo`]="{ item }">
         <v-chip
           :color="getColorTotal(item.jumbo)"
@@ -96,6 +96,11 @@
 var minTotal= 0;
 var minPrecio= 0;
 var contador= 0;
+var contadorGlobal= 0;
+var segundaPasada= false;
+var corte= 0;
+var flag;
+var preciosMin= [];
 
   export default {
     data () {
@@ -136,18 +141,18 @@ var contador= 0;
             name: 'Leche serenísima',
             jumbo: 160,
             carrefour: 45,
-            dia:50,
+            dia:35,
           },
           {
             name: 'Paty 100g',
             jumbo: 10,
-            carrefour: 45,
+            carrefour: 5,
             dia: 23,
           },
           {
             name: 'Azucar 200g',
             jumbo: 25,
-            carrefour: 45,
+            carrefour: 20,
             dia: 23,
           },
           {
@@ -172,21 +177,48 @@ var contador= 0;
       }
     },
     methods: {
-      getColor (precio) {
-        var color= "grey";
+
+
+
+      getColor (nombre, precio) {
+
+        let color= "grey";
         contador= contador +1;
-        if (minPrecio== 0 || precio<minPrecio){
-          minPrecio= precio
+        contadorGlobal= contadorGlobal +1;
+
+        if (nombre== flag && !segundaPasada){
+          segundaPasada= true
+          corte= contadorGlobal
         }
-        console.error(minPrecio)
+        if (contadorGlobal== 3){
+          flag= nombre
+        }
+        if (!segundaPasada){
+          if (minPrecio== 0 || precio<minPrecio){
+            minPrecio= precio
+          }
+          if (contador == 3){
+            preciosMin.push(minPrecio)
+            preciosMin.push(minPrecio)
+            preciosMin.push(minPrecio)
+            contador= 0,
+            minPrecio= 0
+          }
+          return color
+        } else {
+          if (precio== preciosMin[contadorGlobal-corte]){
+            color= "green"
+          }
+          return color
+        }
+
+
+        /*
         if (minPrecio== precio){
           color= "green"
         }
-        if (contador == 3){
-          contador= 0,
-          minPrecio= 0
-        }
-        return color
+        */
+
       },
 
       getColorTotal (total) {
