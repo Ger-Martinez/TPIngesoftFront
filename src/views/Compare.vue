@@ -6,6 +6,7 @@
       :search="search"
       item-key="name"
       class="elevation-1 "
+      onclick="resetearValores()"
     >
 
       <template v-slot:top>
@@ -173,15 +174,49 @@ var preciosMin= [];
             carrefour: 45,
             dia: 23,
           },
+          {
+            name: 'Galletitas',
+            jumbo: 110,
+            carrefour: 115,
+            dia: 105,
+          },
+          {
+            name: 'Cereales',
+            jumbo: 110,
+            carrefour: 120,
+            dia: 105,
+          },
+          {
+            name: 'Pan',
+            jumbo: 30,
+            carrefour: 40,
+            dia: 35,
+          },
+          {
+            name: 'Verdura',
+            jumbo: 211,
+            carrefour: 235,
+            dia: 233,
+          },
+          {
+            name: 'Coca',
+            jumbo: 111,
+            carrefour: 215,
+            dia: 123,
+          },
+          {
+            name: 'Yerba',
+            jumbo: 121,
+            carrefour: 145,
+            dia: 223,
+          },
         ],
       }
     },
     methods: {
 
-
-
       getColor (nombre, precio) {
-
+        console.error(contadorGlobal)
         let color= "grey";
         contador= contador +1;
         contadorGlobal= contadorGlobal +1;
@@ -211,14 +246,6 @@ var preciosMin= [];
           }
           return color
         }
-
-
-        /*
-        if (minPrecio== precio){
-          color= "green"
-        }
-        */
-
       },
 
       getColorTotal (total) {
@@ -228,6 +255,17 @@ var preciosMin= [];
         if (minTotal== total) return 'green'
         else return "grey"
       },
+
+      resetearValores() {
+        minTotal= 0
+        minPrecio= 0
+        contador= 0
+        contadorGlobal= 0
+        segundaPasada= false
+        corte= 0
+        flag= ""
+        preciosMin= []
+      }
     },
   }
 </script>
