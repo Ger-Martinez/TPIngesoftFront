@@ -6,7 +6,8 @@
       :search="search"
       item-key="name"
       class="elevation-1 "
-      onclick="resetearValores()"
+      :items-per-page="100"
+      hide-default-footer
     >
 
       <template v-slot:top>
@@ -97,11 +98,7 @@
 var minTotal= 0;
 var minPrecio= 0;
 var contador= 0;
-var contadorGlobal= 0;
-var segundaPasada= false;
-var corte= 0;
-var flag;
-var preciosMin= [];
+var arrayPrecios= [];
 
   export default {
     data () {
@@ -140,7 +137,7 @@ var preciosMin= [];
         productos: [
           {
             name: 'Leche serenísima',
-            jumbo: 160,
+            jumbo: 35,
             carrefour: 45,
             dia:35,
           },
@@ -210,42 +207,36 @@ var preciosMin= [];
             carrefour: 145,
             dia: 223,
           },
+          {
+            name: 'Agua',
+            jumbo: 100,
+            carrefour: 90,
+            dia: 105,
+          },
         ],
       }
     },
     methods: {
 
       getColor (nombre, precio) {
-        console.error(contadorGlobal)
-        let color= "grey";
+        let color= "grey"
         contador= contador +1;
-        contadorGlobal= contadorGlobal +1;
 
-        if (nombre== flag && !segundaPasada){
-          segundaPasada= true
-          corte= contadorGlobal
-        }
-        if (contadorGlobal== 3){
-          flag= nombre
-        }
-        if (!segundaPasada){
+        if (!arrayPrecios.includes(nombre)){
           if (minPrecio== 0 || precio<minPrecio){
             minPrecio= precio
           }
           if (contador == 3){
-            preciosMin.push(minPrecio)
-            preciosMin.push(minPrecio)
-            preciosMin.push(minPrecio)
-            contador= 0,
+            arrayPrecios.push(nombre,minPrecio)
+            contador= 0
             minPrecio= 0
           }
-          return color
         } else {
-          if (precio== preciosMin[contadorGlobal-corte]){
+          if (precio== arrayPrecios[arrayPrecios.indexOf(nombre)+1]){ //se le suma uno al index of porque se guarda (nombre, precio)
             color= "green"
           }
-          return color
         }
+        return color
       },
 
       getColorTotal (total) {
@@ -255,17 +246,6 @@ var preciosMin= [];
         if (minTotal== total) return 'green'
         else return "grey"
       },
-
-      resetearValores() {
-        minTotal= 0
-        minPrecio= 0
-        contador= 0
-        contadorGlobal= 0
-        segundaPasada= false
-        corte= 0
-        flag= ""
-        preciosMin= []
-      }
     },
   }
 </script>
