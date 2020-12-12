@@ -6,8 +6,7 @@
       :search="search"
       item-key="name"
       class="elevation-1 "
-      :items-per-page="100"
-      hide-default-footer
+      :items-per-page="1000"
     >
 
       <template v-slot:top>
