@@ -10,14 +10,17 @@
                         <v-text-field
                             label="Nombre"
                             required
+                            v-model="r_nombre"
                             outlined></v-text-field>
                         <v-text-field
                             label="Apellido"
                             required
+                            v-model="r_apellido"
                             outlined></v-text-field>
                         <v-text-field
                             label="Mail"
                             required
+                            v-model="r_mail"
                             :rules="emailRules"
                             outlined></v-text-field>
                         <v-text-field
@@ -38,7 +41,7 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn class="primary" :disabled="!valid" @click="registerform" block>Registrase</v-btn>
+                        <v-btn class="primary" :disabled="!valid" @click="registerform" block>Registrarse</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -57,7 +60,7 @@
                             @click:append="show2 = !show2"/>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn class="success" block>Iniciar Sesión</v-btn>
+                        <v-btn class="success" block @click="loginForm">Iniciar Sesión</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -70,10 +73,20 @@
 export default {
     data(){
         return{
+            test1:'',
             show1: false,
             show2: false,
             valid: false,
+            // Para el registro de cuentas --> //
             r_passw: '',
+            r_mail:'',
+            r_nombre:'',
+            r_apellido:'',
+            // <-- //
+            // Para el inicio de sesion --> //
+            i_passw: '',
+            i_mail:'',
+            // <-- //
             emailRules: [
                 v => !!v || 'El email es obligatorio.',
                 v => /.+@.+/.test(v) || 'El email ingresado no es valido.',
@@ -89,8 +102,36 @@ export default {
         }
     },
     methods:{
+        loginform(){
+            if(this.$refs.form.validate()){
+                this.axios.post('http://localhost:8080/authenticate/authenticate',
+                    {
+                        "password": this.i_passw,
+                        "username": this.i_mail
+                    }).then(
+                    response => {
+                        console.log("entre")
+                        this.test1 = response;
+                    }
+                ).catch(e => console.log(e));
+            }
+        },
         registerform(){
-            this.$refs.form.validate();
+            if(this.$refs.form.validate()){
+                this.axios.post('http://localhost:8080/authenticate/register',
+                    {
+                        "email": this.r_mail,
+                        "firstName": this.r_nombre,
+                        "lastName": this.r_apellido,
+                        "password": this.r_passw,
+                        "role": "ROLE_USER"
+                    }).then(
+                    response => {
+                        console.log("entre")
+                        this.test1 = response;
+                    }
+                ).catch(e => console.log(e));
+            }
         }
     }
 }

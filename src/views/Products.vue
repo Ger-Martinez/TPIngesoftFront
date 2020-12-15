@@ -37,6 +37,11 @@ export default {
 
         getCategoryName(i){
             return categoryNamesArray[i-1];
+        },
+
+        filtrarCategoria(i){
+            console.error(i);
+            return null;
         }
     }
     
