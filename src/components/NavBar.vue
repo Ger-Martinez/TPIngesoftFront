@@ -15,46 +15,17 @@
         </div>
         <v-spacer></v-spacer>
 
-        <div>
-            <v-btn
-                text
-                color="contrast"
-                class="white--text"
-                v-for="(item, index) in nav_buttons"
-                :key="index"
-                :to="item.path"
-                >{{ item.title }}</v-btn
-            >
-        </div>
+        <v-btn
+            text
+            color="contrast"
+            class="white--text"
+            v-for="(item, index) in nav_buttons"
+            :key="index"
+            :to="item.path"
+            >{{ item.title }}</v-btn>
 
         <v-spacer></v-spacer>
-
-        <v-menu
-            :close-on-click="true"
-            :close-on-content-click="true"
-            :offset-y="true"
-        >
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn v-bind="attrs" text v-on="on">
-                    <v-avatar size="75%">
-                        <v-icon dark color="contrast">mdi-account_circle</v-icon>
-                    </v-avatar>
-                </v-btn>
-            </template>
-            <v-list dense flat>
-                <v-list-item
-                    v-for="(item, index) in profile_overflow"
-                    :key="index"
-                    :to="item.element.path">
-                    <v-list-item-icon>
-                        <v-icon v-text="item.element.icon"></v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title
-                        v-text="item.element.title"
-                    ></v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu>
+        <v-btn class="yellow darken-4 white--text" to="/login">Iniciar Sesion</v-btn>
     </v-app-bar>
 </template>
 <script>
@@ -66,30 +37,6 @@ export default {
             { title: "Home", path: "/" },
             { title: "Productos", path: "/productos" },
             { title: "Comparar", path: "/comparador" }
-        ],
-        profile_overflow: [
-            {
-                element: {
-                    title: "My Profile",
-                    icon: "person",
-                    path: "/profile"
-                }
-            },
-            {
-                element: {
-                    title: "Help",
-                    icon: "help_outline",
-                    path: "/help"
-                }
-            },
-            {
-                element: {
-                    title: "Sign Out",
-                    icon: "exit_to_app",
-                    path: "",
-                    action: "logout"
-                }
-            }
         ]
     }),
 };

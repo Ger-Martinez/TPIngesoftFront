@@ -1,6 +1,6 @@
 <template>
     <v-container fluid class="pa-0 grey lighten-2">
-        <v-img class="mb-5" contain src="@/assets/Fotuli.png"></v-img>{{test()}}        {{test1.data}}
+        <v-img class="mb-5" contain src="@/assets/Fotuli.png"></v-img>
         <!-- como funciona la pagina -->
         <v-row no-gutters dense>
             <v-col cols="12" md="4" xl="4">
@@ -83,7 +83,7 @@ export default {
     },
     methods:{
         test: function(){
-            this.axios.get('http://localhost:5432/marketproducts/get/7790070032669?supermarket=CARREFOUR').then(
+            this.axios.get('http://localhost:8080/marketproducts/get/7790070032669?supermarket=JUMBO').then(
                 response => {
                     console.log("entre")
                     this.test1 = response;

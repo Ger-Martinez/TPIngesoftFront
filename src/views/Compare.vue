@@ -25,7 +25,7 @@
       </template>
 
       <template v-slot:[`item.jumbo`]="{ item }">
-        <v-chip
+        <v-chip href="../link" target="_blank"
           :color="getColor(item.name, item.jumbo)"
           dark
         >
@@ -34,7 +34,7 @@
       </template>
 
       <template v-slot:[`item.carrefour`]="{ item }">
-        <v-chip
+        <v-chip href="../link" target="_blank"
           :color="getColor(item.name, item.carrefour)"
           dark
         >
@@ -43,7 +43,7 @@
       </template>
 
       <template v-slot:[`item.dia`]="{ item }">
-        <v-chip
+        <v-chip href="../link" target="_blank"
           :color="getColor(item.name, item.dia)"
           dark
         >
