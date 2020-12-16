@@ -25,10 +25,13 @@
             >{{ item.title }}</v-btn>
 
         <v-spacer></v-spacer>
-        <v-btn class="yellow darken-4 white--text" to="/login">Iniciar Sesion</v-btn>
+        {{getLogStatus()}}
+        <v-btn class="yellow darken-4 white--text" to="/login" v-if="getLogStatus()">Iniciar Sesion</v-btn>
     </v-app-bar>
 </template>
 <script>
+import { mapActions } from 'vuex';
+
 export default {
     name: "NavBar",
 
@@ -39,5 +42,12 @@ export default {
             { title: "Comparar", path: "/comparador" }
         ]
     }),
+    methods:{
+        ...mapActions(['getLogedIn','setLogedIn']),
+        getLogStatus(){
+            console.log('this.getLogedIn()')
+            return this.getLogedIn();
+        }
+    }
 };
 </script>

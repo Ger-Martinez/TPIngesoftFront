@@ -61,10 +61,14 @@
                 </v-row>
             </v-col>
         </v-row>    
-    </v-container>                        
+    </v-container>
 </template>
 
 <script>
+
+var URL= "https://serene-oasis-15073.herokuapp.com";
+//var URL= "http://localhost:8080";
+
 // @ is an alias to /src
 export default {
     components:{ 
@@ -82,8 +86,9 @@ export default {
         }
     },
     methods:{
+
         test: function(){
-            this.axios.get('http://localhost:8080/marketproducts/get/7790070032669?supermarket=JUMBO').then(
+            this.axios.get(URL+'/marketproducts/get/7790070032669?supermarket=JUMBO').then(
                 response => {
                     console.log("entre")
                     this.test1 = response;
