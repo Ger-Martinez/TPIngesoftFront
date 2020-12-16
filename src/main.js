@@ -8,6 +8,9 @@ import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
 
+// Para el correcto funcionamineto del login
+export const logInBus = new Vue();
+
 Vue.config.productionTip = false
 
 new Vue({

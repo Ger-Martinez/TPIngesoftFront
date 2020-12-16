@@ -25,13 +25,12 @@
             >{{ item.title }}</v-btn>
 
         <v-spacer></v-spacer>
-        {{getLogStatus()}}
-        <v-btn class="yellow darken-4 white--text" to="/login" v-if="getLogStatus()">Iniciar Sesion</v-btn>
+        <v-btn class="yellow darken-4 white--text" to="/login" v-if="!this.logedIn">Iniciar Sesion</v-btn>
+        <v-btn class="yellow darken-4 white--text" @click="logOut()" to="/" v-else>Cerrar Sesion</v-btn>
     </v-app-bar>
 </template>
 <script>
-import { mapActions } from 'vuex';
-
+import { logInBus } from "../main";
 export default {
     name: "NavBar",
 
@@ -40,14 +39,18 @@ export default {
             { title: "Home", path: "/" },
             { title: "Productos", path: "/productos" },
             { title: "Comparar", path: "/comparador" }
-        ]
+        ],
+        logedIn: false
     }),
     methods:{
-        ...mapActions(['getLogedIn','setLogedIn']),
-        getLogStatus(){
-            console.log('this.getLogedIn()')
-            return this.getLogedIn();
+        logOut(){
+            this.logedIn = !this.logedIn;
         }
+    },
+    created(){
+        logInBus.$on('logedIn', (data)=>{
+            this.logedIn=data;
+        })
     }
-};
+}
 </script>

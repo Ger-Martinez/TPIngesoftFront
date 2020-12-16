@@ -41,7 +41,7 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn class="primary" :disabled="!valid" @click="registerform" block>Registrarse</v-btn>
+                        <v-btn class="primary" :disabled="!valid" @click="registerform()" :loading="this.register" block>Registrarse</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -52,15 +52,17 @@
                     <v-card-text>
                         <v-text-field
                             label="Usuario"
+                            v-model="i_mail"
                             outlined></v-text-field>
                         <v-text-field 
+                            v-model="i_passw"
                             outlined label="Contraseña" 
                             :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                             :type="show2 ? 'text' : 'password'"
                             @click:append="show2 = !show2"/>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn class="success" block @click="loginForm">Iniciar Sesión</v-btn>
+                        <v-btn class="success" block @click="loginform()" :loading="this.login">Iniciar Sesión</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -70,10 +72,13 @@
 </template>
 
 <script>
+import { logInBus } from "../main";
+import router from '../router/index';
 export default {
     data(){
         return{
-            test1:'',
+            login: false,
+            register: false,
             show1: false,
             show2: false,
             valid: false,
@@ -103,21 +108,24 @@ export default {
     },
     methods:{
         loginform(){
-            if(this.$refs.form.validate()){
-                this.axios.post('http://localhost:8080/authenticate/authenticate',
-                    {
-                        "password": this.i_passw,
-                        "username": this.i_mail
-                    }).then(
-                    response => {
-                        console.log("entre")
-                        this.test1 = response;
-                    }
-                ).catch(e => console.log(e));
-            }
+            this.login=true;
+            this.axios.post('http://localhost:8080/authenticate/authenticate',
+                {
+                    "password": this.i_passw,
+                    "username": this.i_mail
+                }).then(
+                response => {
+                    console.log("entre")
+                    this.test1 = response;
+                    logInBus.$emit('logedIn', true);
+                    this.login=false;
+                    router.push({name:'Productos'})
+                }
+            ).catch(e => console.log(e));
         },
         registerform(){
             if(this.$refs.form.validate()){
+                this.register=true;
                 this.axios.post('http://localhost:8080/authenticate/register',
                     {
                         "email": this.r_mail,
@@ -129,6 +137,9 @@ export default {
                     response => {
                         console.log("entre")
                         this.test1 = response;
+                        logInBus.$emit('logedIn', true);
+                        this.register=false;
+                        router.push({name:'Productos'})
                     }
                 ).catch(e => console.log(e));
             }
