@@ -14,7 +14,6 @@
             <v-toolbar-title style="cursor: pointer" @click="$router.push('/')" class="ml-3 white--text" > Voy al Super </v-toolbar-title>
         </div>
         <v-spacer></v-spacer>
-
         <v-btn
             text
             color="contrast"

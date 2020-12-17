@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
       :headers="tituloProductos"
-      :items="productos"
+      :items="this.$store.getters.getProductsArray"
       :search="search"
       item-key="name"
       class="elevation-1 "
@@ -11,7 +11,7 @@
 
       <template v-slot:top>
         <v-toolbar flat class="blue darken-1">
-          <v-toolbar-title class="white--text">Comparación de productos</v-toolbar-title>
+          <v-toolbar-title class="white--text"> Comparación de productos</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -25,7 +25,7 @@
       </template>
 
       <template v-slot:[`item.jumbo`]="{ item }">
-        <v-chip href="../link" target="_blank"
+        <v-chip :href="item.jumboURL" target="_blank"
           :color="getColor(item.name, item.jumbo)"
           dark
         >
@@ -34,7 +34,7 @@
       </template>
 
       <template v-slot:[`item.carrefour`]="{ item }">
-        <v-chip href="../link" target="_blank"
+        <v-chip :href="item.carrefourURL" target="_blank"
           :color="getColor(item.name, item.carrefour)"
           dark
         >
@@ -43,7 +43,7 @@
       </template>
 
       <template v-slot:[`item.dia`]="{ item }">
-        <v-chip href="../link" target="_blank"
+        <v-chip :href="item.diaURL" target="_blank"
           :color="getColor(item.name, item.dia)"
           dark
         >
@@ -53,12 +53,19 @@
 
     </v-data-table>
     
+    <v-row justify="center" align="center">
+      <v-col>
+        <v-btn @click="calcularTotales()">Calcular totales</v-btn>
+      </v-col>
+    </v-row>
+    
     <v-data-table
       :headers="tituloTotal"
       :items="totales"
       hide-default-footer
       :items-per-page="5"
       class="elevation-2 mt-7"
+      v-if= "mostrarTotales== true"
     >
 
       <template v-slot:[`item.jumbo`]="{ item }">
@@ -89,6 +96,7 @@
       </template>
 
     </v-data-table>
+
 </v-container>
 
 </template>
@@ -99,9 +107,14 @@ var minPrecio= 0;
 var contador= 0;
 var arrayPrecios= [];
 
+var auxJumbo= 0;
+var auxCarrefour= 0;
+var auxDia= 0;
+
   export default {
     data () {
       return {
+        mostrarTotales: false,
         search: '',
         tituloTotal: [
           {
@@ -117,9 +130,9 @@ var arrayPrecios= [];
         totales: [
           {
             name: 'TOTAL',
-            jumbo: 200,
-            carrefour: 100,
-            dia: 50,
+            jumbo: 0,
+            carrefour: 0,
+            dia: 0,
           },
         ],
         tituloProductos: [
@@ -132,87 +145,7 @@ var arrayPrecios= [];
           { text: 'Jumbo', value: 'jumbo' },
           { text: 'Carrefour', value: 'carrefour' },
           { text: 'Dia', value: 'dia' },
-        ],
-        productos: [
-          {
-            name: 'Leche serenísima',
-            jumbo: 35,
-            carrefour: 45,
-            dia:35,
-          },
-          {
-            name: 'Paty 100g',
-            jumbo: 10,
-            carrefour: 5,
-            dia: 23,
-          },
-          {
-            name: 'Azucar 200g',
-            jumbo: 25,
-            carrefour: 20,
-            dia: 23,
-          },
-          {
-            name: 'Cupcake',
-            jumbo: 160,
-            carrefour: 45,
-            dia: 23,
-          },
-          {
-            name: 'Gingerbread',
-            jumbo: 160,
-            carrefour: 45,
-            dia: 23,
-          },
-          {
-            name: 'Jelly bean',
-            jumbo: 11,
-            carrefour: 45,
-            dia: 23,
-          },
-          {
-            name: 'Galletitas',
-            jumbo: 110,
-            carrefour: 115,
-            dia: 105,
-          },
-          {
-            name: 'Cereales',
-            jumbo: 110,
-            carrefour: 120,
-            dia: 105,
-          },
-          {
-            name: 'Pan',
-            jumbo: 30,
-            carrefour: 40,
-            dia: 35,
-          },
-          {
-            name: 'Verdura',
-            jumbo: 211,
-            carrefour: 235,
-            dia: 233,
-          },
-          {
-            name: 'Coca',
-            jumbo: 111,
-            carrefour: 215,
-            dia: 123,
-          },
-          {
-            name: 'Yerba',
-            jumbo: 121,
-            carrefour: 145,
-            dia: 223,
-          },
-          {
-            name: 'Agua',
-            jumbo: 100,
-            carrefour: 90,
-            dia: 105,
-          },
-        ],
+        ]
       }
     },
     methods: {
@@ -221,8 +154,9 @@ var arrayPrecios= [];
         let color= "grey"
         contador= contador +1;
 
-        if (!arrayPrecios.includes(nombre)){
+        if (!arrayPrecios.includes(nombre) && precio!='Sin stock'){
           if (minPrecio== 0 || precio<minPrecio){
+          //if (minPrecio== 0 || parseInt(precio,10)<parseInt(minPrecio,10)){
             minPrecio= precio
           }
           if (contador == 3){
@@ -245,6 +179,39 @@ var arrayPrecios= [];
         if (minTotal== total) return 'green'
         else return "grey"
       },
-    },
+
+      calcularTotales(){
+
+        //this.$store.dispatch('removeProducts','Alimento para Perros Carne Asada con Vegetales Dogui 1.5 Kg');
+        auxJumbo= 0;
+        auxCarrefour= 0;
+        auxDia= 0;
+
+        let arrayProductos= this.$store.getters.getProductsArray;
+        for (var i=0; i<arrayProductos.length; i++){
+          if(arrayProductos[i].jumbo!= 'Sin stock'){
+            auxJumbo= auxJumbo + parseInt(arrayProductos[i].jumbo,10);
+          }
+          if(arrayProductos[i].carrefour!= 'Sin stock'){
+            auxCarrefour= auxCarrefour + parseInt(arrayProductos[i].carrefour,10);
+          }
+          if(arrayProductos[i].dia!= 'Sin stock'){
+            auxDia= auxDia + parseInt(arrayProductos[i].dia,10);
+          }
+        }
+
+
+        this.totales=[{
+            name: 'TOTAL',
+            jumbo: auxJumbo,
+            carrefour: auxCarrefour,
+            dia: auxDia,
+          }];
+
+        this.mostrarTotales= true;
+        this.$forceUpdate();
+      }
+      
+    }
   }
 </script>

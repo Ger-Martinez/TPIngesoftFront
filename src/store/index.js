@@ -5,24 +5,34 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    logedIn: false
+    productsToCompare:[]
   },
   mutations: {
-    checkLogedIn(state){
-      return state.logedIn;
+    addProduct(state, product){
+      state.productsToCompare.push(product);
     },
-    changeLogedInStatus(state){
-      state.logedIn = !state.logedIn;
+    removeProduct(state, index){
+      state.productsToCompare.splice(index,1);
     }
   },
   actions: {
-    getLogedIn({commit}){
-      return commit("checkLogedIn");
+    addProductAction(context, product){
+      context.commit('addProduct', product);
     },
-    setLogedIn({commit}){
-      commit("changeLogedInStatus");
+    removeProducts({context, state}, name){
+      console.log(state.productsToCompare.length)
+      for(var i=0 ; i<state.productsToCompare.length ; i++){
+        console.log('entre al for')
+        if(state.productsToCompare[i].name==name){
+          context.commit('removeProduct', i);
+          break;
+        }
+      }
     }
   },
-  modules: {
+  getters:{
+    getProductsArray(state){
+      return state.productsToCompare;
+    }
   }
 })

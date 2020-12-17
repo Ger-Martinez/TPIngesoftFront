@@ -4,7 +4,7 @@
             <v-col>
                 <v-row justify="center">
                     <div v-for="i in 9" :key="i" >
-                        <v-card class="mx-4" max-width="400" max-height="400"  @click="filtrarCategoria(i)">
+                        <v-card class="mx-4 mb-2" max-width="400" max-height="400"  @click="filtrarCategoria(i)">
                             <v-card-text class="justify-center">
                                 <v-row align="center" justify="center" class="ma-5">     
                                         <v-img :src="require('@/assets/'+getIcon(i))"></v-img>
@@ -16,20 +16,14 @@
                         </v-card>
                     </div>
                 </v-row>
-                <!-- /v-container -->
-                <!--v-row justify="center" class="mx-3 mt-1 mb-1" v-for="i in 9" :key="i" -->
-                    <!-- category class="mx-3 mt-1 mb-1" v-for="i in 9" :key="i" :icon="getIcon(i)" :catName="getCategoryName(i)"/ -->
-                <!-- /v-row -->
             </v-col>
         </v-row>
-        <v-row v-if="mostrarProductos== true">
-            <v-row>
-                <v-col cols="2" v-for="i in productosSize" :key="i">
-                    <producto :icon="getIcon(categoriaActual)" :titulo="getProductName(i)"
-                    :ean="getEAN(i)" :precioDia="getPrecioDia(i)"/>
-                    <!--producto icon="sinAlcoholIcon.svg" titulo="Noni" descripcion="aaaaaa" precio="2" /-->
-                </v-col>
-            </v-row>
+        <v-row v-if="mostrarProductos== true" justify="center" align="center">
+            <div v-for="i in productosSize" :key="i">
+                <producto class="mx-3 mb-3" :icon="getIcon(categoriaActual)" :titulo="getProductName(i)"
+                :ean="getEAN(i)" v-on:mostrarSnackBar="mostrarSnack($event)"/>
+                <!--producto icon="sinAlcoholIcon.svg" titulo="Noni" descripcion="aaaaaa" precio="2" /-->
+            </div>
         </v-row>
         <v-row v-else justify="center" align="center">
             <v-card>
@@ -45,6 +39,14 @@
                 </v-card-text>
             </v-card>
         </v-row>
+    
+    <div class="text-center">
+
+        <v-snackbar v-model="snackbar" :timeout="timeout" >
+        {{ snackText }}
+        </v-snackbar>
+    </div>
+
     </v-container>
 </template>
 
@@ -55,7 +57,9 @@ var categoryIconsArray= ["congeladosIcon.svg", "almacenIcon.svg", "alcoholIcon.s
 var categoryNamesArray= ["Congelados", "Almacén", "Bebidas con alcohol", "Bebidas sin alcohol", "Bebés", "Frescos", "Limpieza", "Mascotas", "Cuidado personal"];
 var URL= "https://serene-oasis-15073.herokuapp.com";
 
+
 import producto from "@/components/ProductCard";
+//import func from '../../vue-temp/vue-editor-bridge';
 //import category from "@/components/CategoryCard";
 export default {
 
@@ -67,11 +71,14 @@ export default {
             imgProductosArray: [],
             eanProductosArray: [],
             categoriaActual: 0,
-            preciosDiaArray:[],
+            //preciosDiaArray:[],
             imgs: ['one.png', 'two.png', 'three.png'],
             steps: ["Selecciona alguna de las categorias que vez en la parte superior de la pantalla.",
                     "Encuentra algun producto que estes buscando de nuestro catalogo de productos.",
                     "Ve mas informacion sobre el producto o añadelo a tu carrito para compararlo luego."],
+            snackbar: false,
+            snackText: '',
+            timeout: 3000,
         }
     },
 
@@ -96,6 +103,7 @@ export default {
 
         filtrarCategoria: function(i){
             this.inicializarVariables(i);
+            console.log(categoryArray[i-1]);
             this.axios.get(URL+'/products/get/'+categoryArray[i-1]).then(
                 response => {
                     var data = response.data;
@@ -104,8 +112,8 @@ export default {
                         this.nombreProductosArray.push(data[i].description);
                         this.imgProductosArray.push(data[i].imgUrl);
                         this.eanProductosArray.push(data[i].ean);
-                        this.preciosDiaArray.push(this.getPrecio(data[i].ean,"DIA"));
-                        console.log("PRECIO: "+ this.preciosDiaArray[i]);
+                        //this.preciosDiaArray.push(this.getPrecio(data[i].ean,"DIA"));
+                        //console.log("PRECIO: "+ this.preciosDiaArray[i]);
                     }
                     this.mostrarProductos= true;
                 }
@@ -145,11 +153,10 @@ export default {
                 }
             ).catch(e => console.log(e));
         },
-
-        getPrecioDia(i){
-            this.preciosDiaArray[i-1];
-        }
+        mostrarSnack(texto){
+            this.snackbar= true;
+            this.snackText= texto;
+        },
     }
-    
 }
 </script>

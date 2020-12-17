@@ -15,9 +15,8 @@
 export default {
     props:{
         icon: String,
-        catName: String
+        catName: String,
     },
-
     methods:{
         filtrarCategoria(){
             console.log(this.catName);

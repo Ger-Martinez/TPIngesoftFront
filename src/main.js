@@ -8,8 +8,14 @@ import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
 
+// Require dependencies
+var VueCookie = require('vue-cookie');
+// Tell Vue to use the plugin
+Vue.use(VueCookie);
+
 // Para el correcto funcionamineto del login
 export const logInBus = new Vue();
+export const comparator = new Vue();
 
 Vue.config.productionTip = false
 
