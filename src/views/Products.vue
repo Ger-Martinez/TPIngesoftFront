@@ -52,7 +52,7 @@
 
 <script>
 
-let categoryArray= ["ALIMENTOS_CONGELADOS", "ALMACEN", "BEBIDAS_CON_ALCOHOL", "BEBIDAS_SIN_ALCOHOL", "BEBES", "FRESCOS", "LIMPIEZA", "MASCOTAS", "PERFUMERIA_CUIDADO_PERSONAL"];
+let categoryArray= ["ALIMENTOS_CONGELADOS", "ALMACEN", "BEBIDAS_SIN_ALCOHOL", "BEBES", "BEBIDAS_CON_ALCOHOL", "FRESCOS", "LIMPIEZA", "MASCOTAS", "PERFUMERIA_CUIDADO_PERSONAL"];
 var categoryIconsArray= ["congeladosIcon.svg", "almacenIcon.svg", "alcoholIcon.svg", "sinAlcoholIcon.svg", "bebesIcon.svg", "frescoIcon.svg", "limpiezaIcon.svg", "mascotaIcon.svg", "cuidadoPersonalIcon.svg"];
 var categoryNamesArray= ["Congelados", "Almacén", "Bebidas con alcohol", "Bebidas sin alcohol", "Bebés", "Frescos", "Limpieza", "Mascotas", "Cuidado personal"];
 var URL= "https://serene-oasis-15073.herokuapp.com";

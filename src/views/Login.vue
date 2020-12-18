@@ -67,16 +67,33 @@
                 </v-card>
             </v-col>
         </v-row>
+         <v-snackbar v-model="snackbar">
+            El usuario o la contraseña son incorrectos.
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="blue"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+                >
+                OK
+                </v-btn>
+            </template>
+        </v-snackbar>
     </v-container>
     
 </template>
 
 <script>
+
+var URL= "https://serene-oasis-15073.herokuapp.com";
+
 import { logInBus } from "../main";
 import router from '../router/index';
 export default {
     data(){
         return{
+            snackbar: false,
             login: false,
             register: false,
             show1: false,
@@ -109,7 +126,8 @@ export default {
     methods:{
         loginform(){
             this.login=true;
-            this.axios.post('http://localhost:8080/authenticate/authenticate',
+            this.snackbar=false;
+            this.axios.post(URL+'/authenticate/authenticate',
                 {
                     "password": this.i_passw,
                     "username": this.i_mail
@@ -121,12 +139,16 @@ export default {
                     this.login=false;
                     router.push({name:'Productos'})
                 }
-            ).catch(e => console.log(e));
+            ).catch(e => {
+                console.log(e)
+                this.snackbar=true;
+                this.login=false;
+            });
         },
         registerform(){
             if(this.$refs.form.validate()){
                 this.register=true;
-                this.axios.post('http://localhost:8080/authenticate/register',
+                this.axios.post(URL+'/authenticate/register',
                     {
                         "email": this.r_mail,
                         "firstName": this.r_nombre,
