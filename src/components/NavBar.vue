@@ -22,7 +22,16 @@
             :key="index"
             :to="item.path"
             >{{ item.title }}</v-btn>
-
+        
+        <div v-if="logedIn">
+        <v-btn text
+            color="contrast"
+            class="white--text"
+            v-for="(item, index) in logedInButtons"
+            
+            :key="index"
+            to="/ups">{{item.title}}</v-btn>
+        </div>
         <v-spacer></v-spacer>
         <v-btn class="yellow darken-4 white--text" to="/login" v-if="!this.logedIn">Iniciar Sesion</v-btn>
         <v-btn class="yellow darken-4 white--text" @click="logOut()" to="/" v-else>Cerrar Sesion</v-btn>
@@ -39,7 +48,11 @@ export default {
             { title: "Productos", path: "/productos" },
             { title: "Comparar", path: "/comparador" }
         ],
-        logedIn: false
+        logedIn: false,
+        logedInButtons: [
+            { title: "Historial" },
+            { title: "Favoritos" }
+        ]
     }),
     methods:{
         logOut(){

@@ -211,7 +211,6 @@ var auxDia= 0;
         this.mostrarTotales= true;
         this.$forceUpdate();
       }
-      
     }
   }
 </script>
