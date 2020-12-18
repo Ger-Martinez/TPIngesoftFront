@@ -76,9 +76,9 @@ export default {
     },
     data(){
         return{
-            steps: ["Armá tu carrito de compras desde nuestro sitio web.",
-                    "Compará el valor de tu carrito entre los supermercados que tengas más cerca.",
-                    "Relajate y esperá que llegue tu pedido."],
+            steps: ["Armá tu lista de compras desde la pestaña de PRODUCTOS.",
+                    "Compará el valor de tu carrito entre los supermercados que tengas más cerca desde la pestaña de COMPARAR.",
+                    "Realizá la compra de la manera habitual, sabiendo que pagaste el menor precio."],
             imgs: ['one.png', 'two.png', 'three.png'],
             imgs2: ['s1.png', 's2.png', 's3.png'],
             supers: ['jumbo.png', 'coto.png', 'dia.png', 'carrefour.jpg'],

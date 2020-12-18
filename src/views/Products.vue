@@ -28,7 +28,7 @@
         <v-row v-else justify="center" align="center">
             <v-card>
                 <v-card-title>¡Bienvenido al buscador de productos!</v-card-title>
-                <v-card-subtitle>Ahora te explicaremos brevemente como funciona.</v-card-subtitle>
+                <v-card-subtitle>Ahora te explicaremos brevemente cómo funciona.</v-card-subtitle>
                 <v-card-text>
                     <v-container v-for="(step, index) in steps" :key="index">
                         <v-list-item>
@@ -73,9 +73,9 @@ export default {
             categoriaActual: 0,
             //preciosDiaArray:[],
             imgs: ['one.png', 'two.png', 'three.png'],
-            steps: ["Selecciona alguna de las categorias que vez en la parte superior de la pantalla.",
-                    "Encuentra algun producto que estes buscando de nuestro catalogo de productos.",
-                    "Ve mas informacion sobre el producto o añadelo a tu carrito para compararlo luego."],
+            steps: ["Seleccioná alguna de las categorias que ves en la parte superior de la pantalla.",
+                    "Encontrá algún producto que estés buscando de nuestro catálogo de productos.",
+                    "Podés ver el precio o agregarlo a la lista para compararlo luego."],
             snackbar: false,
             snackText: '',
             timeout: 3000,
@@ -103,7 +103,6 @@ export default {
 
         filtrarCategoria: function(i){
             this.inicializarVariables(i);
-            console.log(categoryArray[i-1]);
             this.axios.get(URL+'/products/get/'+categoryArray[i-1]).then(
                 response => {
                     var data = response.data;
@@ -148,7 +147,6 @@ export default {
             this.axios.get(URL+'/marketproducts/get/'+ean+'?supermarket='+supermercado).then(
                 response => {
                     var data = response.data;
-                    console.error(data.price);
                     return data.price;
                 }
             ).catch(e => console.log(e));
