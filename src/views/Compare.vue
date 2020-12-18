@@ -151,13 +151,19 @@ var auxDia= 0;
     methods: {
 
       getColor (nombre, precio) {
+
+        if (contador>3){
+          contador= 0;
+        }
+
         let color= "grey"
         contador= contador +1;
 
         if (!arrayPrecios.includes(nombre) && precio!='Sin stock'){
           if (minPrecio== 0 || precio<minPrecio){
-          //if (minPrecio== 0 || parseInt(precio,10)<parseInt(minPrecio,10)){
-            minPrecio= precio
+            if (precio!= null){
+              minPrecio= precio;
+            }
           }
           if (contador == 3){
             arrayPrecios.push(nombre,minPrecio)
@@ -165,8 +171,9 @@ var auxDia= 0;
             minPrecio= 0
           }
         } else {
-          if (precio== arrayPrecios[arrayPrecios.indexOf(nombre)+1]){ //se le suma uno al index of porque se guarda (nombre, precio)
+          if (precio=== arrayPrecios[arrayPrecios.indexOf(nombre)+1]){ //se le suma uno al index of porque se guarda (nombre, precio)
             color= "green"
+            contador= 0;
           }
         }
         return color
@@ -187,15 +194,17 @@ var auxDia= 0;
         auxCarrefour= 0;
         auxDia= 0;
 
+        minTotal= 0;
+
         let arrayProductos= this.$store.getters.getProductsArray;
         for (var i=0; i<arrayProductos.length; i++){
-          if(arrayProductos[i].jumbo!= 'Sin stock'){
+          if(arrayProductos[i].jumbo!= 'Sin stock' && arrayProductos[i].jumbo!=null){
             auxJumbo= auxJumbo + parseInt(arrayProductos[i].jumbo,10);
           }
-          if(arrayProductos[i].carrefour!= 'Sin stock'){
+          if(arrayProductos[i].carrefour!= 'Sin stock' && arrayProductos[i].carrefour!=null){
             auxCarrefour= auxCarrefour + parseInt(arrayProductos[i].carrefour,10);
           }
-          if(arrayProductos[i].dia!= 'Sin stock'){
+          if(arrayProductos[i].dia!= 'Sin stock' && arrayProductos[i].dia!=null){
             auxDia= auxDia + parseInt(arrayProductos[i].dia,10);
           }
         }
